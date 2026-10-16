@@ -15,8 +15,8 @@ struct OnboardingView: View {
 
             Group {
                 switch step {
-                case 0: choices(Goal.allCases, selected: draft.goal) { draft.goal = $0 }
-                case 1: choices(Level.allCases, selected: draft.level) { draft.level = $0 }
+                case 0: choices(Goal.allCases, selected: draft.goal, title: \.title) { draft.goal = $0 }
+                case 1: choices(Level.allCases, selected: draft.level, title: \.rawValue) { draft.level = $0 }
                 case 2: lengthPicker
                 default: limitationPicker
                 }
@@ -40,14 +40,14 @@ struct OnboardingView: View {
         .animation(.default, value: step)
     }
 
-    private func choices<T: Identifiable & RawRepresentable & Equatable>(
-        _ items: [T], selected: T, pick: @escaping (T) -> Void
-    ) -> some View where T.RawValue == String {
+    private func choices<T: Identifiable & Equatable>(
+        _ items: [T], selected: T, title: KeyPath<T, String>, pick: @escaping (T) -> Void
+    ) -> some View {
         VStack(spacing: 12) {
             ForEach(items) { item in
                 Button { pick(item) } label: {
                     HStack {
-                        Text(item.rawValue).font(.title3)
+                        Text(item[keyPath: title]).font(.title3)
                         Spacer()
                         if item == selected { Image(systemName: "checkmark.circle.fill") }
                     }

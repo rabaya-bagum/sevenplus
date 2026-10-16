@@ -18,6 +18,11 @@ final class WorkoutBuilderTests: XCTestCase {
         XCTAssertEqual(WorkoutBuilder.build(profile: Profile(level: .advanced, minutes: 20)).steps.count, 24)
     }
 
+    func testNameUsesGoalTitle() {
+        let p = Profile(goal: .loseWeight, level: .beginner, minutes: 7, limitations: [])
+        XCTAssertEqual(WorkoutBuilder.build(profile: p).name, "7-Minute Lose Weight")
+    }
+
     func testActualDurationIsCloseToRequested() {
         for level in Level.allCases {
             for mins in WorkoutBuilder.lengths {

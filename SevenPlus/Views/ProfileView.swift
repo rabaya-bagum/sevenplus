@@ -26,7 +26,7 @@ struct ProfileView: View {
         NavigationStack {
             Form {
                 Section("Training") {
-                    Picker("Goal", selection: p.goal) { ForEach(Goal.allCases) { Text($0.rawValue).tag($0) } }
+                    Picker("Goal", selection: p.goal) { ForEach(Goal.allCases) { Text($0.title).tag($0) } }
                     Picker("Level", selection: p.level) { ForEach(Level.allCases) { Text($0.rawValue).tag($0) } }
                     Picker("Default length", selection: p.minutes) {
                         ForEach(WorkoutBuilder.lengths, id: \.self) { Text("\($0) min").tag($0) }

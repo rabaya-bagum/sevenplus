@@ -55,7 +55,7 @@ enum WorkoutBuilder {
             }
             round += 1
         }
-        return Workout(id: "daily-\(dayIndex)-\(mins)", name: "\(mins)-Minute \(profile.goal.rawValue.capitalized)", steps: steps)
+        return Workout(id: "daily-\(dayIndex)-\(mins)", name: "\(mins)-Minute \(profile.goal.title)", steps: steps)
     }
 
     /// Days since 1 Jan 2001 in the user's calendar, used to vary the daily workout.

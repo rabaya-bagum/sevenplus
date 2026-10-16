@@ -3,6 +3,14 @@ import Foundation
 enum Goal: String, Codable, CaseIterable, Identifiable {
     case getFit = "Get fit", loseWeight = "Lose weight", getStrong = "Get stronger"
     var id: String { rawValue }
+    /// Display name. Raw values are stored in saved profiles, so don't edit them for wording.
+    var title: String {
+        switch self {
+        case .getFit: return "Get Fit"
+        case .loseWeight: return "Lose Weight"
+        case .getStrong: return "Get Stronger"
+        }
+    }
 }
 
 enum Level: String, Codable, CaseIterable, Identifiable {
