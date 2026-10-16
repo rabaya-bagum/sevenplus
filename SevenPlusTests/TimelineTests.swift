@@ -33,6 +33,16 @@ final class TimelineTests: XCTestCase {
         XCTAssertEqual(ids.count, 12)
     }
 
+    func testLibraryIntegrity() {
+        let ids = ExerciseLibrary.all.map(\.id)
+        XCTAssertEqual(Set(ids).count, ids.count, "duplicate exercise id")
+        XCTAssertGreaterThanOrEqual(ids.count, 20)
+        for ex in ExerciseLibrary.all where ex.impact == .high {
+            let swap = try? XCTUnwrap(ex.quietSwapId, "\(ex.id) has no quiet swap")
+            XCTAssertEqual(ExerciseLibrary.all.first { $0.id == swap }?.impact, .low, "\(ex.id) swap missing or not low-impact")
+        }
+    }
+
     @MainActor
     func testEngineSurvivesBackgroundingAndSkip() {
         var clock = Date(timeIntervalSince1970: 0)

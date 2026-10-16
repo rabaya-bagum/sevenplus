@@ -14,9 +14,17 @@ enum ExerciseLibrary {
         Exercise(id: "lunge", name: "Lunge", cue: "Back knee drops straight down.", impact: .low, symbol: "figure.walk"),
         Exercise(id: "push-up-rotation", name: "Push-up and Rotation", cue: "Rotate through the whole body.", impact: .low, symbol: "figure.flexibility"),
         Exercise(id: "side-plank", name: "Side Plank", cue: "Stack your feet, lift your hips.", impact: .low, symbol: "figure.pilates"),
+        Exercise(id: "burpee", name: "Burpee", cue: "Chest to floor, then jump and reach up.", impact: .high, symbol: "figure.cross.training", quietSwapId: "step-back-burpee"),
+        Exercise(id: "mountain-climber", name: "Mountain Climber", cue: "Hips level, drive knees to chest.", impact: .high, symbol: "figure.highintensity.intervaltraining", quietSwapId: "slow-climber"),
+        Exercise(id: "glute-bridge", name: "Glute Bridge", cue: "Push through heels, squeeze at the top.", impact: .low, symbol: "figure.flexibility"),
+        Exercise(id: "bird-dog", name: "Bird-Dog", cue: "Opposite arm and leg, keep your back flat.", impact: .low, symbol: "figure.yoga"),
+        Exercise(id: "calf-raise", name: "Calf Raise", cue: "Rise slowly onto your toes, lower with control.", impact: .low, symbol: "figure.stand"),
+        Exercise(id: "superman", name: "Superman", cue: "Lift arms and legs, look at the floor.", impact: .low, symbol: "figure.pool.swim"),
         // Quiet-mode swaps
         Exercise(id: "step-jacks", name: "Step Jacks", cue: "Step out side to side, arms overhead.", impact: .low, symbol: "figure.mixed.cardio"),
         Exercise(id: "marching", name: "Fast March", cue: "Pump your arms, knees high.", impact: .low, symbol: "figure.walk"),
+        Exercise(id: "step-back-burpee", name: "Step-back Burpee", cue: "Step back to plank, step in, stand tall.", impact: .low, symbol: "figure.cross.training"),
+        Exercise(id: "slow-climber", name: "Slow Mountain Climber", cue: "Step one knee in at a time, hips steady.", impact: .low, symbol: "figure.core.training"),
     ]
 
     static func exercise(_ id: String) -> Exercise {
