@@ -38,7 +38,7 @@ enum BodyArea: String, Codable, CaseIterable, Identifiable {
     }
 }
 
-struct Profile: Codable, Equatable {
+struct Profile: Codable, Hashable {
     var goal: Goal = .getFit
     var level: Level = .beginner
     var minutes: Int = 7                 // one of WorkoutBuilder.lengths

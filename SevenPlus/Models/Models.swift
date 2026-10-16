@@ -36,7 +36,7 @@ enum Difficulty: String, Codable, CaseIterable {
     case tooEasy = "Too easy", justRight = "Just right", tooHard = "Too hard"
 }
 
-struct Session: Identifiable, Codable {
+struct Session: Identifiable, Codable, Equatable {
     let id: UUID
     let workoutId: String
     let date: Date

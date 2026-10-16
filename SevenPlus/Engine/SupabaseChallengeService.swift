@@ -119,6 +119,13 @@ final class SupabaseChallengeService: ChallengeService {
         return c
     }
 
+    func removeParticipant(userId: String) async throws {
+        for var c in try await list(for: userId) {
+            c.participants.removeAll { $0.id == userId }
+            try await put(c)
+        }
+    }
+
     /// Read-modify-write of this user's own entry. Two friends reporting in the same
     /// instant could overwrite each other; the next report corrects it.
     func report(challengeId: String, participant: Challenge.Participant) async throws {

@@ -10,7 +10,7 @@ final class ChallengeStore: ObservableObject {
     }
 
     let service: ChallengeService
-    let userId: String
+    private(set) var userId: String
 
     init(service: ChallengeService? = nil, defaults: UserDefaults = .standard) {
         if let service {
@@ -28,6 +28,22 @@ final class ChallengeStore: ObservableObject {
             userId = id
         }
         displayName = defaults.string(forKey: "displayName") ?? "Me"
+    }
+
+    /// Takes this user off every online leaderboard.
+    func leaveAll() async throws {
+        try await service.removeParticipant(userId: userId)
+        challenges = []
+    }
+
+    /// Fresh identity and empty list after erasing.
+    func resetLocal(defaults: UserDefaults = .standard) {
+        challenges = []
+        error = nil
+        let id = UUID().uuidString
+        defaults.set(id, forKey: "userId")
+        userId = id
+        displayName = "Me"
     }
 
     var me: Challenge.Participant { Challenge.Participant(id: userId, name: displayName, completed: 0) }

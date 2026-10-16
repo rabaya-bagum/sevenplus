@@ -57,6 +57,24 @@ final class SessionStore: ObservableObject {
         return count
     }
 
+    // MARK: - Erase
+
+    /// Deletes every session, the profile and all custom workouts. The app
+    /// returns to onboarding because `profile` becomes nil.
+    func eraseAll() {
+        do {
+            try context.delete(model: SessionRecord.self)
+            try context.delete(model: ProfileRecord.self)
+            try context.delete(model: CustomWorkoutRecord.self)
+        } catch {
+            assertionFailure("Erase failed: \(error)")
+        }
+        persist()
+        sessions = []
+        customWorkouts = []
+        profile = nil
+    }
+
     // MARK: - Custom workouts
 
     /// Insert or update a user-built workout.

@@ -102,6 +102,13 @@ enum ReadinessLog {
         return log[dayKey(date, calendar)]
     }
 
+    /// Every saved check-in, keyed "yyyy-MM-dd".
+    static func all(defaults: UserDefaults = .standard) -> [String: Readiness] {
+        defaults.data(forKey: key).flatMap { try? JSONDecoder().decode([String: Readiness].self, from: $0) } ?? [:]
+    }
+
+    static func clear(defaults: UserDefaults = .standard) { defaults.removeObject(forKey: key) }
+
     static func record(_ r: Readiness, date: Date = Date(), calendar: Calendar = .current,
                        defaults: UserDefaults = .standard) {
         var log = (defaults.data(forKey: key)).flatMap { try? JSONDecoder().decode([String: Readiness].self, from: $0) } ?? [:]

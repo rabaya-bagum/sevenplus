@@ -64,6 +64,27 @@ final class HealthManager: ObservableObject {
         }
     }
 
+    /// Deletes the workouts and calorie samples SevenPlus saved to Health.
+    /// Returns false if Health refused (for example, write access was removed).
+    func deleteSavedData() async -> Bool {
+        guard isAvailable else { return true }
+        let mine = HKQuery.predicateForObjects(from: HKSource.default())
+        var ok = true
+        for type in [HKObjectType.workoutType(), HKQuantityType(.activeEnergyBurned)] as [HKObjectType] {
+            let done: Bool = await withCheckedContinuation { cont in
+                store.deleteObjects(of: type, predicate: mine) { success, _, _ in cont.resume(returning: success) }
+            }
+            ok = ok && done
+        }
+        return ok
+    }
+
+    func resetLocal() {
+        enabled = false
+        cachedWeightKg = nil
+        lastError = nil
+    }
+
     /// Most recent body weight in kg, if the user shared it.
     func latestWeightKg() async -> Double? {
         guard isAvailable else { return nil }

@@ -96,6 +96,13 @@ struct ProfileView: View {
                     }
                     Button("Restore purchases") { Task { await premium.restore() } }
                 }
+                Section {
+                    NavigationLink { YourDataView() } label: {
+                        Label("Your data", systemImage: "lock.shield")
+                    }
+                } footer: {
+                    Text("Export or erase everything SevenPlus stores.")
+                }
                 #if DEBUG
                 Section("Developer") {
                     Toggle("Unlock Premium (debug only)", isOn: $premium.debugUnlock)

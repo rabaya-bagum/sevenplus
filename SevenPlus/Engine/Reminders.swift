@@ -58,6 +58,12 @@ final class ReminderScheduler: ObservableObject {
         settings.enabled = granted
     }
 
+    /// Back to defaults (off); cancels every scheduled reminder.
+    func resetLocal() {
+        permissionDenied = false
+        settings = ReminderSettings()
+    }
+
     func apply() async {
         let pending = await center.pendingNotificationRequests()
         center.removePendingNotificationRequests(withIdentifiers:

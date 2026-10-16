@@ -59,6 +59,7 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Engine/SupabaseChallengeService.swift` | Online challenges via Supabase (setup: `docs/BACKEND.md`) |
 | `Engine/ChallengeStore.swift` / `Views/ChallengesView.swift` | Challenges, leaderboards, invites |
 | `Engine/RepCounter.swift` / `Engine/PoseCamera.swift` | On-device camera rep counting (Vision body pose) |
+| `Engine/YourData.swift` / `Views/YourDataView.swift` | Export everything as JSON; erase all data (Profile → Your data) |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |

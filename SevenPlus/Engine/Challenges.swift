@@ -81,6 +81,8 @@ protocol ChallengeService {
     func create(_ c: Challenge) async throws
     func join(code: String, as participant: Challenge.Participant) async throws -> Challenge
     func report(challengeId: String, participant: Challenge.Participant) async throws
+    /// Removes this user from every challenge (used when erasing data).
+    func removeParticipant(userId: String) async throws
 }
 
 /// On-device only: you can track your own challenges; friends can't join.
@@ -114,6 +116,13 @@ final class LocalChallengeService: ChallengeService {
               let i = c.participants.firstIndex(where: { $0.id == participant.id }) else { return }
         c.participants[i] = participant
         try await save(c)
+    }
+
+    /// Challenges left with nobody in them are deleted.
+    func removeParticipant(userId: String) async throws {
+        var list = all
+        for i in list.indices { list[i].participants.removeAll { $0.id == userId } }
+        all = list.filter { !$0.participants.isEmpty }
     }
 
     private func save(_ c: Challenge) async throws {
