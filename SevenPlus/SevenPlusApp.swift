@@ -4,6 +4,7 @@ import SwiftUI
 struct SevenPlusApp: App {
     @StateObject private var store = SessionStore()
     @StateObject private var premium = PremiumStore()
+    @StateObject private var reminders = ReminderScheduler()
 
     var body: some Scene {
         WindowGroup {
@@ -16,6 +17,7 @@ struct SevenPlusApp: App {
             }
             .environmentObject(store)
             .environmentObject(premium)
+            .environmentObject(reminders)
         }
     }
 }

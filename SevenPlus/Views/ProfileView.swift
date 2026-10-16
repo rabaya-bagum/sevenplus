@@ -4,6 +4,18 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var store: SessionStore
     @EnvironmentObject var premium: PremiumStore
+    @EnvironmentObject var reminders: ReminderScheduler
+
+    private var reminderTime: Binding<Date> {
+        Binding(
+            get: { Calendar.current.date(from: DateComponents(hour: reminders.settings.hour,
+                                                               minute: reminders.settings.minute)) ?? Date() },
+            set: { d in
+                let c = Calendar.current.dateComponents([.hour, .minute], from: d)
+                reminders.settings.hour = c.hour ?? 18
+                reminders.settings.minute = c.minute ?? 0
+            })
+    }
 
     private var p: Binding<Profile> {
         Binding(get: { store.profile ?? Profile() }, set: { store.profile = $0 })
@@ -33,6 +45,38 @@ struct ProfileView: View {
                     Text("Go easy on")
                 } footer: {
                     Text("Daily workouts leave out moves that load these areas.")
+                }
+                Section {
+                    Toggle("Workout reminders", isOn: Binding(
+                        get: { reminders.settings.enabled },
+                        set: { on in Task { await reminders.setEnabled(on) } }))
+                    if reminders.settings.enabled {
+                        DatePicker("Time", selection: reminderTime, displayedComponents: .hourAndMinute)
+                        HStack {
+                            ForEach(1...7, id: \.self) { day in
+                                let on = reminders.settings.weekdays.contains(day)
+                                Button {
+                                    if on { reminders.settings.weekdays.remove(day) }
+                                    else { reminders.settings.weekdays.insert(day) }
+                                } label: {
+                                    Text(Calendar.current.veryShortWeekdaySymbols[day - 1])
+                                        .frame(maxWidth: .infinity, minHeight: 32)
+                                        .background(on ? Color.accentColor : Color.secondary.opacity(0.15),
+                                                    in: Circle())
+                                        .foregroundStyle(on ? .white : .primary)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(Calendar.current.weekdaySymbols[day - 1])
+                                .accessibilityAddTraits(on ? .isSelected : [])
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Reminders")
+                } footer: {
+                    if reminders.permissionDenied {
+                        Text("Notifications are off for SevenPlus. Turn them on in Settings → Notifications.")
+                    }
                 }
                 Section("Premium") {
                     if premium.isPremium {
