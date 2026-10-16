@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5E7E0000000000000000B001 /* SevenPlusWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5E7E0000000000000000B002 /* SevenPlusWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5E7E0000000000000000C001 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 5E7E0000000000000000C003 /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E7E0000000000000000C001 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +161,7 @@
 			);
 			name = SevenPlus;
 			packageProductDependencies = (
+				5E7E0000000000000000C003 /* Sentry */,
 			);
 			productName = SevenPlus;
 			productReference = 5E7E00000000000000000020 /* SevenPlus.app */;
@@ -240,6 +243,9 @@
 			);
 			mainGroup = 5E7E00000000000000000002;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5E7E0000000000000000C002 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5E7E00000000000000000003 /* Products */;
 			projectDirPath = "";
@@ -555,6 +561,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5E7E0000000000000000C002 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.30.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5E7E0000000000000000C003 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5E7E0000000000000000C002 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5E7E00000000000000000001 /* Project object */;
 }

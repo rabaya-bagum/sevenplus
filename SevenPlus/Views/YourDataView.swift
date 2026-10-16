@@ -6,6 +6,7 @@ struct YourDataView: View {
     @EnvironmentObject var reminders: ReminderScheduler
     @EnvironmentObject var health: HealthManager
     @EnvironmentObject var challenges: ChallengeStore
+    @EnvironmentObject var crash: CrashReporter
 
     @State private var exportURL: URL?
     @State private var exportError: String?
@@ -32,6 +33,14 @@ struct YourDataView: View {
                 Text(challenges.service.isOnline
                      ? "SevenPlus has no account. Everything stays on this iPhone, except your name and workout count in challenges you share with friends."
                      : "SevenPlus has no account. Everything stays on this iPhone.")
+            }
+
+            if crash.isConfigured {
+                Section {
+                    Toggle("Share crash reports", isOn: $crash.enabled)
+                } footer: {
+                    Text("Off by default. When SevenPlus crashes, sends the developer where the code failed, your iPhone model and iOS version. Never your name, workouts or health data.")
+                }
             }
 
             Section {
@@ -92,7 +101,8 @@ struct YourDataView: View {
     private func erase(skipRemote: Bool) async {
         erasing = true
         let outcome = await DataEraser.run(skipRemote: skipRemote, alsoHealth: alsoHealth && health.isAvailable,
-                                           store: store, reminders: reminders, health: health, challenges: challenges)
+                                           store: store, reminders: reminders, health: health, challenges: challenges,
+                                           crash: crash)
         erasing = false
         if case .remoteFailed(let message) = outcome { remoteFailure = message }
         if let url = exportURL { try? FileManager.default.removeItem(at: url) }

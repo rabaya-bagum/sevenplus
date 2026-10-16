@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct SevenPlusApp: App {
+    // First, so a crash while loading data can still be reported (if the user opted in).
+    @StateObject private var crash = CrashReporter()
     @StateObject private var store = SessionStore()
     @StateObject private var premium = PremiumStore()
     @StateObject private var reminders = ReminderScheduler()
@@ -22,6 +24,7 @@ struct SevenPlusApp: App {
             .environmentObject(reminders)
             .environmentObject(health)
             .environmentObject(challenges)
+            .environmentObject(crash)
             .onAppear { PhoneConnectivity.shared.activate() }
         }
     }

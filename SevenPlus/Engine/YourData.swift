@@ -49,6 +49,7 @@ enum StoredKeys {
         "healthEnabled",
         "upsellShown",
         "countReps",
+        "crashReportsEnabled",
         "profile", "quietMode", // Phase 0 leftovers, normally already removed
     ]
 
@@ -71,6 +72,7 @@ enum DataEraser {
     static func run(skipRemote: Bool, alsoHealth: Bool,
                     store: SessionStore, reminders: ReminderScheduler,
                     health: HealthManager, challenges: ChallengeStore,
+                    crash: CrashReporter? = nil,
                     defaults: UserDefaults = .standard) async -> Outcome {
         if !skipRemote && challenges.service.isOnline {
             do { try await challenges.leaveAll() } catch { return .remoteFailed(error.localizedDescription) }
@@ -80,6 +82,7 @@ enum DataEraser {
         StoredKeys.removeAll(from: defaults)
         reminders.resetLocal()
         health.resetLocal()
+        crash?.resetLocal()
         challenges.resetLocal(defaults: defaults)
         store.eraseAll()
         return .erased(healthDeleted: healthDeleted)
