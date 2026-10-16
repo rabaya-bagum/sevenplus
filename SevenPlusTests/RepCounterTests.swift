@@ -31,7 +31,9 @@ final class RepCounterTests: XCTestCase {
 
     func testJitterAroundThresholdDoesNotDoubleCount() {
         var c = RepCounter(down: 100, up: 160)
-        for a in [170.0, 150, 120, 98, 102, 97, 103, 99, 130, 158, 162, 159, 163, 170] { c.update(angle: a) }
+        for a in [170.0, 140, 110, 90, 80, 95, 85, 100, 90, 120, 150, 165, 158, 167, 162, 175, 158, 163] {
+            c.update(angle: a)
+        }
         XCTAssertEqual(c.count, 1)
     }
 
