@@ -23,8 +23,9 @@ final class ChallengeStore: ObservableObject {
         if let id = defaults.string(forKey: "userId") {
             userId = id
         } else {
-            userId = UUID().uuidString
-            defaults.set(userId, forKey: "userId")
+            let id = UUID().uuidString
+            defaults.set(id, forKey: "userId")
+            userId = id
         }
         displayName = defaults.string(forKey: "displayName") ?? "Me"
     }

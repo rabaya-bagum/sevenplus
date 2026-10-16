@@ -33,7 +33,8 @@ final class ChallengeTests: XCTestCase {
             XCTAssertEqual(InviteCode.normalize(code), code)
             XCTAssertFalse(code.contains("O") || code.contains("0") || code.contains("I") || code.contains("1"))
         }
-        XCTAssertEqual(InviteCode.normalize(" ab2-cd3 "), nil, "too short")
+        XCTAssertEqual(InviteCode.normalize(" ab2-cd3 "), "AB2CD3", "spaces and dashes ignored")
+        XCTAssertNil(InviteCode.normalize("ab2-cd"), "too short")
         XCTAssertEqual(InviteCode.normalize("abc-def"), "ABCDEF")
         XCTAssertNil(InviteCode.normalize("ABCDE0"), "0 is not in the alphabet")
     }
@@ -43,10 +44,13 @@ final class ChallengeTests: XCTestCase {
         var me = Challenge.Participant(id: "me", name: "Me", completed: 0)
         let c = Challenge.make(title: "T", target: 3, days: 7, owner: me)
         try await service.create(c)
-        XCTAssertEqual(try await service.list(for: "me").map(\.id), [c.id])
-        XCTAssertTrue(try await service.list(for: "someone-else").isEmpty)
+        let mine = try await service.list(for: "me")
+        XCTAssertEqual(mine.map(\.id), [c.id])
+        let others = try await service.list(for: "someone-else")
+        XCTAssertTrue(others.isEmpty)
         me.completed = 2
         try await service.report(challengeId: c.id, participant: me)
-        XCTAssertEqual(try await service.list(for: "me").first?.participants.first?.completed, 2)
+        let updated = try await service.list(for: "me")
+        XCTAssertEqual(updated.first?.participants.first?.completed, 2)
     }
 }
