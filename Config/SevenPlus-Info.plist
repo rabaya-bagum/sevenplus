@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>SevenPlus can count your reps using the camera. Video is processed on your phone and never saved or sent.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>SevenPlus reads your body weight to estimate calories burned.</string>
 	<key>NSHealthUpdateUsageDescription</key>

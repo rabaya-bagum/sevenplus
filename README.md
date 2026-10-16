@@ -1,5 +1,10 @@
 # SevenPlus
 
+All three phases of the spec are implemented: MVP (Phase 1), launch features (Phase 2:
+adaptive difficulty, readiness, Apple Health, Apple Watch) and growth features (Phase 3:
+friend challenges, camera rep counting). Rep counting needs a real device (no camera in the
+Simulator).
+
 Classic 7-minute workout with a voice coach, background-safe timer, quiet mode, streaks and history.
 Requires **Xcode 16+**, iOS 17+.
 
@@ -51,6 +56,7 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Engine/Challenges.swift` | Challenge model, invite codes, on-device service |
 | `Engine/SupabaseChallengeService.swift` | Online challenges via Supabase (setup: `docs/BACKEND.md`) |
 | `Engine/ChallengeStore.swift` / `Views/ChallengesView.swift` | Challenges, leaderboards, invites |
+| `Engine/RepCounter.swift` / `Engine/PoseCamera.swift` | On-device camera rep counting (Vision body pose) |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |

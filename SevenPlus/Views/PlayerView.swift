@@ -13,6 +13,8 @@ struct PlayerView: View {
     @State private var finishedSession: Session?
     @State private var showingSwaps = false
     @ObservedObject private var watch = PhoneConnectivity.shared
+    @StateObject private var camera = PoseCamera()
+    @AppStorage("countReps") private var countReps = false
     @Environment(\.scenePhase) private var scenePhase
 
     init(workout: Workout, onClose: @escaping () -> Void) {
@@ -49,13 +51,18 @@ struct PlayerView: View {
             watch.send(.from(engine))
         }
         .onDisappear {
+            camera.stop()
             UIApplication.shared.isIdleTimerDisabled = false
             watch.onCommand = nil
             watch.send(.idle)
         }
         // Tell the watch whenever the stage, exercise or pause state changes;
         // it counts the seconds down on its own in between.
-        .onChange(of: watchKey) { _, _ in watch.send(.from(engine)) }
+        .onChange(of: watchKey) { _, _ in
+            watch.send(.from(engine))
+            updateCamera()
+        }
+        .onChange(of: countReps) { _, _ in updateCamera() }
         .onChange(of: scenePhase) { _, new in
             if new == .active { engine.tick() }  // catch up after backgrounding
         }
@@ -93,6 +100,13 @@ struct PlayerView: View {
             .frame(width: 200, height: 200)
             .accessibilityElement()
             .accessibilityLabel("\(remaining) seconds remaining")
+
+            if countReps, let ex = currentExercise, RepProfile.supports(ex.id), case .work = engine.phase {
+                RepCounterView(camera: camera)
+            } else if let ex = currentExercise, RepProfile.supports(ex.id), case .work = engine.phase {
+                Button { countReps = true } label: { Label("Count my reps", systemImage: "camera.viewfinder") }
+                    .buttonStyle(.bordered)
+            }
 
             if let bpm = watch.heartRate {
                 Label("\(bpm) bpm", systemImage: "heart.fill").foregroundStyle(.red).font(.headline)
@@ -171,6 +185,15 @@ struct PlayerView: View {
         case .work(let i, _): return engine.workout.steps[i].workSeconds
         case .rest(let i, _): return engine.workout.steps[i].restSeconds
         case .finished: return 1
+        }
+    }
+
+    /// Camera runs only while working on a countable exercise with counting on.
+    private func updateCamera() {
+        if countReps, case .work = engine.phase, let ex = currentExercise, RepProfile.supports(ex.id), !engine.isPaused {
+            camera.start(exerciseId: ex.id)
+        } else {
+            camera.stop()
         }
     }
 
