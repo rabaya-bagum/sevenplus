@@ -3,18 +3,16 @@
 Classic 7-minute workout with a voice coach, background-safe timer, quiet mode, streaks and history.
 Requires **Xcode 16+**, iOS 17+.
 
-## Set up in Xcode (about 5 minutes)
+## Open in Xcode
 
-1. Xcode → **File → New → Project → iOS → App**.
-   - Product Name: `SevenPlus` · Interface: **SwiftUI** · Storage: **None** · tick **Include Tests**.
-2. In the new project, delete the generated `ContentView.swift` and `SevenPlusApp.swift`.
-3. Drag the `SevenPlus/` folder from this zip (Models, Engine, Views, SevenPlusApp.swift) into the
-   `SevenPlus` group. Choose **Copy items if needed** and target **SevenPlus**.
-4. Drag `SevenPlusTests/TimelineTests.swift` into the test group, target **SevenPlusTests**.
-   Delete the generated test file.
-5. Target **SevenPlus → Signing & Capabilities → + Capability → Background Modes**,
-   tick **Audio, AirPlay, and Picture in Picture** (keeps the voice coach going when the screen locks).
-6. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
+1. Open `SevenPlus.xcodeproj`.
+2. Target **SevenPlus → Signing & Capabilities**: pick your **Team** (and change the bundle ID
+   `com.sevenplus.app` if it's taken).
+3. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
+
+The `SevenPlus/` and `SevenPlusTests/` folders are synced groups, so new files you add there
+join their target automatically. Background audio (keeps the voice coach going when the screen
+locks) is set in `Config/SevenPlus-Info.plist`.
 
 ## What's here
 
