@@ -6,6 +6,7 @@ struct SevenPlusApp: App {
     @StateObject private var premium = PremiumStore()
     @StateObject private var reminders = ReminderScheduler()
     @StateObject private var health = HealthManager()
+    @StateObject private var challenges = ChallengeStore()
 
     var body: some Scene {
         WindowGroup {
@@ -20,6 +21,7 @@ struct SevenPlusApp: App {
             .environmentObject(premium)
             .environmentObject(reminders)
             .environmentObject(health)
+            .environmentObject(challenges)
             .onAppear { PhoneConnectivity.shared.activate() }
         }
     }

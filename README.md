@@ -48,6 +48,9 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Engine/WatchProtocol.swift` | Messages shared by the iPhone and Watch apps |
 | `Engine/PhoneConnectivity.swift` | iPhone side of the Watch link |
 | `SevenPlusWatch/` | Apple Watch app (setup: `docs/WATCH_SETUP.md`) |
+| `Engine/Challenges.swift` | Challenge model, invite codes, on-device service |
+| `Engine/SupabaseChallengeService.swift` | Online challenges via Supabase (setup: `docs/BACKEND.md`) |
+| `Engine/ChallengeStore.swift` / `Views/ChallengesView.swift` | Challenges, leaderboards, invites |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |

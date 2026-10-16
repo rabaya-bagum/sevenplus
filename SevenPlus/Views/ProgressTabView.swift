@@ -18,6 +18,12 @@ struct ProgressTabView: View {
                     }
                 }
 
+                Section {
+                    NavigationLink { ChallengesView() } label: {
+                        Label("Challenges", systemImage: "trophy")
+                    }
+                }
+
                 Section("Last 7 days") {
                     Chart(week) { day in
                         BarMark(x: .value("Day", day.date, unit: .day),

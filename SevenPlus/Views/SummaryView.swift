@@ -38,6 +38,10 @@ struct SummaryView: View {
                 Text("Your next workout adapts to this.").font(.footnote).foregroundStyle(.secondary)
             }
 
+            ShareLink(item: shareText) {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
+
             Spacer()
             Button(action: onDone) {
                 Text("Done").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 6)
@@ -46,6 +50,12 @@ struct SummaryView: View {
             .padding(.horizontal)
         }
         .padding()
+    }
+
+    private var shareText: String {
+        let mins = max(1, session.durationSeconds / 60)
+        let streak = store.streak > 1 ? " \(store.streak)-day streak!" : ""
+        return "Just finished a \(mins)-minute workout with SevenPlus.\(streak)"
     }
 
     private func stat(_ value: String, _ label: String) -> some View {

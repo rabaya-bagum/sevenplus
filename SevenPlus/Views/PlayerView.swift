@@ -7,6 +7,7 @@ struct PlayerView: View {
     @EnvironmentObject var store: SessionStore
     @EnvironmentObject var premium: PremiumStore
     @EnvironmentObject var health: HealthManager
+    @EnvironmentObject var challenges: ChallengeStore
     @StateObject private var engine: WorkoutEngine
     @State private var coach = Coach()
     @State private var finishedSession: Session?
@@ -221,6 +222,7 @@ struct PlayerView: View {
                         skipped: engine.skipped, difficulty: nil, calories: kcal)
         store.add(s)
         Task { await health.save(start: end.addingTimeInterval(-Double(elapsed)), end: end, kcal: kcal) }
+        if completed { Task { await challenges.reportProgress(sessions: store.sessions) } }
         if completed { premium.workoutCompleted(totalCompleted: store.sessions.filter(\.completed).count) }
         if completed { finishedSession = s } else { onClose() }
     }
