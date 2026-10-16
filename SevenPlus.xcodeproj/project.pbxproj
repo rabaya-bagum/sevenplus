@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5E7E0000000000000000B001 /* SevenPlusWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5E7E0000000000000000B002 /* SevenPlusWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		5E7E0000000000000000B003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E7E00000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E7E0000000000000000B010;
+			remoteInfo = SevenPlusWatch;
+		};
 		5E7E000000000000000000A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E7E00000000000000000001 /* Project object */;
@@ -16,21 +27,56 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5E7E0000000000000000B004 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				5E7E0000000000000000B001 /* SevenPlusWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5E7E0000000000000000B002 /* SevenPlusWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SevenPlusWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E7E0000000000000000B005 /* SevenPlusWatch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SevenPlusWatch-Info.plist"; sourceTree = "<group>"; };
+		5E7E0000000000000000B006 /* SevenPlusWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SevenPlusWatch.entitlements; sourceTree = "<group>"; };
 		5E7E00000000000000000020 /* SevenPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SevenPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7E00000000000000000021 /* SevenPlusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SevenPlusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7E00000000000000000022 /* SevenPlus-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SevenPlus-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5E7E0000000000000000B008 /* Exceptions for "SevenPlus" folder in "SevenPlusWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Engine/WatchProtocol.swift,
+			);
+			target = 5E7E0000000000000000B010 /* SevenPlusWatch */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5E7E00000000000000000030 /* SevenPlus */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5E7E0000000000000000B008 /* Exceptions for "SevenPlus" folder in "SevenPlusWatch" target */,
+			);
 			path = SevenPlus;
 			sourceTree = "<group>";
 		};
 		5E7E00000000000000000031 /* SevenPlusTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SevenPlusTests;
+			sourceTree = "<group>";
+		};
+		5E7E0000000000000000B007 /* SevenPlusWatch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SevenPlusWatch;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -50,6 +96,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5E7E0000000000000000B011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -58,6 +111,7 @@
 			children = (
 				5E7E00000000000000000030 /* SevenPlus */,
 				5E7E00000000000000000031 /* SevenPlusTests */,
+				5E7E0000000000000000B007 /* SevenPlusWatch */,
 				5E7E00000000000000000004 /* Config */,
 				5E7E00000000000000000003 /* Products */,
 			);
@@ -68,6 +122,7 @@
 			children = (
 				5E7E00000000000000000020 /* SevenPlus.app */,
 				5E7E00000000000000000021 /* SevenPlusTests.xctest */,
+				5E7E0000000000000000B002 /* SevenPlusWatch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +131,8 @@
 			isa = PBXGroup;
 			children = (
 				5E7E00000000000000000022 /* SevenPlus-Info.plist */,
+				5E7E0000000000000000B005 /* SevenPlusWatch-Info.plist */,
+				5E7E0000000000000000B006 /* SevenPlusWatch.entitlements */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -90,10 +147,12 @@
 				5E7E00000000000000000050 /* Sources */,
 				5E7E00000000000000000040 /* Frameworks */,
 				5E7E00000000000000000060 /* Resources */,
+				5E7E0000000000000000B004 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5E7E0000000000000000B014 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5E7E00000000000000000030 /* SevenPlus */,
@@ -128,6 +187,28 @@
 			productReference = 5E7E00000000000000000021 /* SevenPlusTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		5E7E0000000000000000B010 /* SevenPlusWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E7E0000000000000000B020 /* Build configuration list for PBXNativeTarget "SevenPlusWatch" */;
+			buildPhases = (
+				5E7E0000000000000000B012 /* Sources */,
+				5E7E0000000000000000B011 /* Frameworks */,
+				5E7E0000000000000000B013 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5E7E0000000000000000B007 /* SevenPlusWatch */,
+			);
+			name = SevenPlusWatch;
+			packageProductDependencies = (
+			);
+			productName = SevenPlusWatch;
+			productReference = 5E7E0000000000000000B002 /* SevenPlusWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -144,6 +225,9 @@
 					5E7E00000000000000000011 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 5E7E00000000000000000010;
+					};
+					5E7E0000000000000000B010 = {
+						CreatedOnToolsVersion = 16.0;
 					};
 				};
 			};
@@ -163,6 +247,7 @@
 			targets = (
 				5E7E00000000000000000010 /* SevenPlus */,
 				5E7E00000000000000000011 /* SevenPlusTests */,
+				5E7E0000000000000000B010 /* SevenPlusWatch */,
 			);
 		};
 /* End PBXProject section */
@@ -176,6 +261,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5E7E00000000000000000061 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E7E0000000000000000B013 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -199,6 +291,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5E7E0000000000000000B012 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -206,6 +305,11 @@
 			isa = PBXTargetDependency;
 			target = 5E7E00000000000000000010 /* SevenPlus */;
 			targetProxy = 5E7E000000000000000000A1 /* PBXContainerItemProxy */;
+		};
+		5E7E0000000000000000B014 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E7E0000000000000000B010 /* SevenPlusWatch */;
+			targetProxy = 5E7E0000000000000000B003 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -355,6 +459,62 @@
 			};
 			name = Release;
 		};
+		5E7E0000000000000000B021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SevenPlusWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/SevenPlusWatch-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SevenPlus;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.sevenplus.app;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenplus.app.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		5E7E0000000000000000B022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SevenPlusWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/SevenPlusWatch-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SevenPlus;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.sevenplus.app;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenplus.app.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -381,6 +541,15 @@
 			buildConfigurations = (
 				5E7E00000000000000000080 /* Debug */,
 				5E7E00000000000000000081 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E7E0000000000000000B020 /* Build configuration list for PBXNativeTarget "SevenPlusWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E7E0000000000000000B021 /* Debug */,
+				5E7E0000000000000000B022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

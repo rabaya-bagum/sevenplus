@@ -13,14 +13,16 @@ Requires **Xcode 16+**, iOS 17+.
 1. Open `SevenPlus.xcodeproj`.
 2. Target **SevenPlus → Signing & Capabilities**: pick your **Team** (and change the bundle ID
    `com.sevenplus.app` if it's taken).
-3. To test purchases locally: **Product → Scheme → Edit Scheme → Run → Options → StoreKit
-   Configuration** → choose `SevenPlus.storekit`. (In Debug builds you can also flip
+3. Test purchases work in the Simulator out of the box: the shared `SevenPlus` scheme uses
+   `Config/SevenPlus.storekit`. (In Debug builds you can also flip
    **Profile → Developer → Unlock Premium**.)
 4. HealthKit: the app target uses `Config/SevenPlus.entitlements`. If signing complains, add the
    **HealthKit** capability under Signing & Capabilities (it uses the same file).
-5. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
+5. The iPhone app embeds the Watch app, so Xcode needs the **watchOS platform** installed
+   (Xcode → Settings → Components, or `xcodebuild -downloadPlatform watchOS`) to build either.
+6. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
 
-The `SevenPlus/` and `SevenPlusTests/` folders are synced groups, so new files you add there
+The `SevenPlus/`, `SevenPlusTests/` and `SevenPlusWatch/` folders are synced groups, so new files you add there
 join their target automatically. Background audio (keeps the voice coach going when the screen
 locks) is set in `Config/SevenPlus-Info.plist`.
 

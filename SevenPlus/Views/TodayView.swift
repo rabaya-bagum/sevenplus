@@ -57,10 +57,17 @@ struct TodayView: View {
                                 else { premium.showPaywall = true }
                             })) {
                             ForEach(WorkoutBuilder.lengths, id: \.self) { m in
-                                Text(Gate.canUse(length: m, premium: premium.isPremium) ? "\(m)m" : "\(m)m 🔒").tag(m)
+                                Text("\(m)m").tag(m)
                             }
                         }
                         .pickerStyle(.segmented)
+                        // A lock in each segment gets truncated, so name the locked lengths once.
+                        let locked = WorkoutBuilder.lengths.filter { !Gate.canUse(length: $0, premium: premium.isPremium) }
+                        if !locked.isEmpty {
+                            Label("\(locked.map { "\($0)" }.joined(separator: ", ")) min with Premium", systemImage: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                         Text("\(today.steps.count) exercises · \(intervals.work)s on / \(intervals.rest)s rest")
                             .foregroundStyle(.secondary)
                         if let note = readiness?.note {
