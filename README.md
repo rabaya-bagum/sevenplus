@@ -45,6 +45,9 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Config/SevenPlus.storekit` | Local test products for the Simulator |
 | `Engine/Adaptive.swift` | Adaptive difficulty from ratings, daily readiness check-in |
 | `Engine/Health.swift` | Calorie estimate and saving workouts to Apple Health |
+| `Engine/WatchProtocol.swift` | Messages shared by the iPhone and Watch apps |
+| `Engine/PhoneConnectivity.swift` | iPhone side of the Watch link |
+| `SevenPlusWatch/` | Apple Watch app (setup: `docs/WATCH_SETUP.md`) |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |

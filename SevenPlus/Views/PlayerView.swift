@@ -11,6 +11,7 @@ struct PlayerView: View {
     @State private var coach = Coach()
     @State private var finishedSession: Session?
     @State private var showingSwaps = false
+    @ObservedObject private var watch = PhoneConnectivity.shared
     @Environment(\.scenePhase) private var scenePhase
 
     init(workout: Workout, onClose: @escaping () -> Void) {
@@ -35,8 +36,25 @@ struct PlayerView: View {
             }
             engine.start()
             Task { await health.refreshWeight() }
+            watch.clearHeartRate()
+            watch.onCommand = { cmd in
+                switch cmd {
+                case .pause: engine.pause()
+                case .resume: engine.resume()
+                case .skip: engine.skip()
+                case .end: finish(completed: false)
+                }
+            }
+            watch.send(.from(engine))
         }
-        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+            watch.onCommand = nil
+            watch.send(.idle)
+        }
+        // Tell the watch whenever the stage, exercise or pause state changes;
+        // it counts the seconds down on its own in between.
+        .onChange(of: watchKey) { _, _ in watch.send(.from(engine)) }
         .onChange(of: scenePhase) { _, new in
             if new == .active { engine.tick() }  // catch up after backgrounding
         }
@@ -74,6 +92,11 @@ struct PlayerView: View {
             .frame(width: 200, height: 200)
             .accessibilityElement()
             .accessibilityLabel("\(remaining) seconds remaining")
+
+            if let bpm = watch.heartRate {
+                Label("\(bpm) bpm", systemImage: "heart.fill").foregroundStyle(.red).font(.headline)
+                    .accessibilityLabel("Heart rate \(bpm) beats per minute")
+            }
 
             if case .rest(let i, _) = engine.phase {
                 Text("Next: \(ExerciseLibrary.exercise(engine.workout.steps[i + 1].exerciseId).name)")
@@ -148,6 +171,17 @@ struct PlayerView: View {
         case .rest(let i, _): return engine.workout.steps[i].restSeconds
         case .finished: return 1
         }
+    }
+
+    private var watchKey: String {
+        let stage: String
+        switch engine.phase {
+        case .getReady: stage = "ready"
+        case .work(let i, _): stage = "work\(i)"
+        case .rest(let i, _): stage = "rest\(i)"
+        case .finished: stage = "done"
+        }
+        return "\(stage)-\(engine.isPaused)-\(engine.workout.steps.map(\.exerciseId).joined())"
     }
 
     private var swapTarget: Exercise? {

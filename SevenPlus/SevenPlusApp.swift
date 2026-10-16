@@ -20,6 +20,7 @@ struct SevenPlusApp: App {
             .environmentObject(premium)
             .environmentObject(reminders)
             .environmentObject(health)
+            .onAppear { PhoneConnectivity.shared.activate() }
         }
     }
 }
