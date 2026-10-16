@@ -14,13 +14,8 @@ struct ExerciseDetailView: View {
         List {
             Section {
                 VStack(spacing: 16) {
-                    // Placeholder until exercise video loops are recorded.
-                    Image(systemName: exercise.symbol)
-                        .font(.system(size: 110))
-                        .foregroundStyle(.tint)
-                        .frame(maxWidth: .infinity, minHeight: 180)
-                        .background(.tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
-                        .accessibilityHidden(true)
+                    ExerciseVisual(exercise: exercise)
+                        .frame(maxWidth: .infinity, maxHeight: 320)
                     Text(exercise.cue).font(.title3).multilineTextAlignment(.center)
                 }
                 .padding(.vertical, 8)

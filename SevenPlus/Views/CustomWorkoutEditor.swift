@@ -67,7 +67,7 @@ struct CustomWorkoutEditor: View {
                 Section("Exercises") {
                     ForEach(Array(exerciseIds.enumerated()), id: \.offset) { i, exId in
                         let ex = ExerciseLibrary.exercise(exId)
-                        Label("\(i + 1). \(ex.name)", systemImage: ex.symbol)
+                        Label { Text("\(i + 1). \(ex.name)") } icon: { ExerciseThumbnail(exercise: ex, size: 36) }
                     }
                     .onMove { exerciseIds.move(fromOffsets: $0, toOffset: $1) }
                     .onDelete { exerciseIds.remove(atOffsets: $0) }

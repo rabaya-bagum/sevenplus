@@ -104,7 +104,7 @@ struct TodayView: View {
                     ForEach(Array(today.steps.enumerated()), id: \.offset) { i, step in
                         let ex = ExerciseLibrary.exercise(step.exerciseId)
                         NavigationLink(value: ex) {
-                            Label("\(i + 1). \(ex.name)", systemImage: ex.symbol)
+                            Label { Text("\(i + 1). \(ex.name)") } icon: { ExerciseThumbnail(exercise: ex, size: 36) }
                         }
                     }
                 }

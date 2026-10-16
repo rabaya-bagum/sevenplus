@@ -82,10 +82,16 @@ struct PlayerView: View {
             Spacer()
 
             Text(title).font(.largeTitle.bold()).multilineTextAlignment(.center)
+            if let ex = visualExercise {
+                // During rest this previews the next move.
+                ExerciseVisual(exercise: ex, playing: !engine.isPaused, tint: tint)
+                    .frame(minHeight: 150, maxHeight: 280)
+                    .opacity(isResting ? 0.75 : 1)
+                    .padding(.horizontal)
+            }
             if let ex = currentExercise {
-                Image(systemName: ex.symbol).font(.system(size: 96)).foregroundStyle(tint)
-                    .accessibilityHidden(true)
                 Text(ex.cue).font(.title3).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    .padding(.horizontal)
             }
 
             ZStack {
@@ -94,10 +100,10 @@ struct PlayerView: View {
                     .stroke(tint, style: StrokeStyle(lineWidth: 14, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(.linear(duration: 0.25), value: ringFraction)
-                Text("\(remaining)").font(.system(size: 64, weight: .bold, design: .rounded))
+                Text("\(remaining)").font(.system(size: 52, weight: .bold, design: .rounded))
                     .monospacedDigit()
             }
-            .frame(width: 200, height: 200)
+            .frame(width: 150, height: 150)
             .accessibilityElement()
             .accessibilityLabel("\(remaining) seconds remaining")
 
@@ -154,6 +160,19 @@ struct PlayerView: View {
         case .getReady: return ExerciseLibrary.exercise(engine.workout.steps[0].exerciseId)
         default: return nil
         }
+    }
+
+    private var isResting: Bool {
+        if case .rest = engine.phase { return true }
+        return false
+    }
+
+    /// What the character shows: the current move, or the next one while resting.
+    private var visualExercise: Exercise? {
+        if case .rest(let i, _) = engine.phase, i + 1 < engine.workout.steps.count {
+            return ExerciseLibrary.exercise(engine.workout.steps[i + 1].exerciseId)
+        }
+        return currentExercise
     }
 
     private var title: String {

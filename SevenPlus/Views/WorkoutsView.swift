@@ -104,7 +104,7 @@ struct ExerciseRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: exercise.symbol).font(.title2).frame(width: 36)
+            ExerciseThumbnail(exercise: exercise, size: 44)
                 .foregroundStyle(.tint).accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(exercise.name)
