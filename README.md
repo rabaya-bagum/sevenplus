@@ -41,6 +41,7 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Engine/Premium.swift` | Free-tier rules (`Gate`) and StoreKit 2 subscriptions |
 | `Views/PaywallView.swift` | Free vs Premium table, purchase, restore |
 | `Config/SevenPlus.storekit` | Local test products for the Simulator |
+| `Engine/Adaptive.swift` | Adaptive difficulty from ratings, daily readiness check-in |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |

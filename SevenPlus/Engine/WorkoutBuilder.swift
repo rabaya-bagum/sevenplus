@@ -21,9 +21,11 @@ enum WorkoutBuilder {
             .sorted { ($0.impact == .low ? 0 : 1, $0.name) < ($1.impact == .low ? 0 : 1, $1.name) }
     }
 
-    static func build(profile: Profile, minutes: Int? = nil, dayIndex: Int = 0) -> Workout {
+    /// `intervals` overrides the level's work/rest (used by the adaptive engine).
+    static func build(profile: Profile, minutes: Int? = nil, dayIndex: Int = 0,
+                      intervals: (work: Int, rest: Int)? = nil) -> Workout {
         let mins = minutes ?? profile.minutes
-        let (work, rest) = profile.level.intervals
+        let (work, rest) = intervals ?? profile.level.intervals
         let count = max(3, (mins * 60 + rest) / (work + rest))  // final rest is dropped
 
         let pool = safePool(for: profile.limitations)

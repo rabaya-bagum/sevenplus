@@ -13,7 +13,7 @@ struct PaywallView: View {
         ("Custom workouts", true, true),
         ("10, 15 and 20-minute workouts", false, true),
         ("Unlimited custom workouts", false, true),
-        ("Adaptive plans (coming soon)", false, true),
+        ("Adaptive difficulty from your feedback", false, true),
     ]
 
     var body: some View {
