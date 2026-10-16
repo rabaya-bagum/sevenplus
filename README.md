@@ -34,6 +34,7 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Views/WorkoutsView.swift` | Classic circuit + searchable exercise library by body area |
 | `Views/ExerciseDetailView.swift` | Cue, area, impact, joint load, quiet alternative |
 | `Views/ProgressTabView.swift` | Streaks, totals, 7-day chart, history |
+| `Views/CustomWorkoutEditor.swift` | Build/edit your own circuit: exercises, order, work/rest, rounds |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |
 | `Views/SummaryView.swift` | Time, streak, difficulty rating |

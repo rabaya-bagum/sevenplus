@@ -43,8 +43,33 @@ final class ProfileRecord {
     }
 }
 
+/// A workout the user built. Steps are stored as encoded JSON.
+@Model
+final class CustomWorkoutRecord {
+    @Attribute(.unique) var id: String
+    var name: String
+    var stepsData: Data
+    var createdAt: Date
+
+    init(_ w: Workout) {
+        id = w.id
+        name = w.name
+        stepsData = (try? JSONEncoder().encode(w.steps)) ?? Data()
+        createdAt = Date()
+    }
+
+    func update(from w: Workout) {
+        name = w.name
+        stepsData = (try? JSONEncoder().encode(w.steps)) ?? Data()
+    }
+
+    var value: Workout {
+        Workout(id: id, name: name, steps: (try? JSONDecoder().decode([WorkoutStep].self, from: stepsData)) ?? [])
+    }
+}
+
 enum AppSchema {
-    static let models: [any PersistentModel.Type] = [SessionRecord.self, ProfileRecord.self]
+    static let models: [any PersistentModel.Type] = [SessionRecord.self, ProfileRecord.self, CustomWorkoutRecord.self]
 
     static func container(inMemory: Bool = false) -> ModelContainer {
         let config = ModelConfiguration(isStoredInMemoryOnly: inMemory)

@@ -8,6 +8,7 @@ struct PlayerView: View {
     @StateObject private var engine: WorkoutEngine
     @State private var coach = Coach()
     @State private var finishedSession: Session?
+    @State private var showingSwaps = false
     @Environment(\.scenePhase) private var scenePhase
 
     init(workout: Workout, onClose: @escaping () -> Void) {
@@ -19,7 +20,7 @@ struct PlayerView: View {
     var body: some View {
         Group {
             if let s = finishedSession {
-                SummaryView(session: s, totalExercises: workout.steps.count, onDone: onClose)
+                SummaryView(session: s, totalExercises: engine.workout.steps.count, onDone: onClose)
             } else {
                 player
             }
@@ -27,7 +28,7 @@ struct PlayerView: View {
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
             engine.onPhaseChange = { p in
-                coach.announce(p, workout: workout)
+                coach.announce(p, workout: engine.workout)
                 if p == .finished { finish(completed: true) }
             }
             engine.start()
@@ -72,7 +73,7 @@ struct PlayerView: View {
             .accessibilityLabel("\(remaining) seconds remaining")
 
             if case .rest(let i, _) = engine.phase {
-                Text("Next: \(ExerciseLibrary.exercise(workout.steps[i + 1].exerciseId).name)")
+                Text("Next: \(ExerciseLibrary.exercise(engine.workout.steps[i + 1].exerciseId).name)")
                     .font(.headline)
             }
 
@@ -88,8 +89,18 @@ struct PlayerView: View {
                     Image(systemName: "forward.end.circle").font(.system(size: 48))
                 }
                 .accessibilityLabel("Skip")
+                Button { showingSwaps = true } label: {
+                    Image(systemName: "arrow.triangle.2.circlepath.circle").font(.system(size: 48))
+                }
+                .accessibilityLabel(swapLabel)
+                .disabled(swapOptions.isEmpty)
             }
             .padding(.bottom)
+            .confirmationDialog(swapLabel, isPresented: $showingSwaps, titleVisibility: .visible) {
+                ForEach(swapOptions) { ex in
+                    Button(ex.name) { engine.swap(to: ex.id) }
+                }
+            }
         }
         .padding(.top)
     }
@@ -98,8 +109,8 @@ struct PlayerView: View {
 
     private var currentExercise: Exercise? {
         switch engine.phase {
-        case .work(let i, _): return ExerciseLibrary.exercise(workout.steps[i].exerciseId)
-        case .getReady: return ExerciseLibrary.exercise(workout.steps[0].exerciseId)
+        case .work(let i, _): return ExerciseLibrary.exercise(engine.workout.steps[i].exerciseId)
+        case .getReady: return ExerciseLibrary.exercise(engine.workout.steps[0].exerciseId)
         default: return nil
         }
     }
@@ -115,7 +126,7 @@ struct PlayerView: View {
 
     private var stepLabel: String {
         switch engine.phase {
-        case .work(let i, _), .rest(let i, _): return "\(i + 1) of \(workout.steps.count)"
+        case .work(let i, _), .rest(let i, _): return "\(i + 1) of \(engine.workout.steps.count)"
         default: return ""
         }
     }
@@ -130,10 +141,26 @@ struct PlayerView: View {
     private var phaseLength: Int {
         switch engine.phase {
         case .getReady: return engine.timeline.getReadySeconds
-        case .work(let i, _): return workout.steps[i].workSeconds
-        case .rest(let i, _): return workout.steps[i].restSeconds
+        case .work(let i, _): return engine.workout.steps[i].workSeconds
+        case .rest(let i, _): return engine.workout.steps[i].restSeconds
         case .finished: return 1
         }
+    }
+
+    private var swapTarget: Exercise? {
+        engine.swapTargetIndex.flatMap { i in
+            i < engine.workout.steps.count ? ExerciseLibrary.exercise(engine.workout.steps[i].exerciseId) : nil
+        }
+    }
+
+    private var swapLabel: String {
+        if case .rest = engine.phase { return "Swap next exercise" }
+        return "Swap \(swapTarget?.name ?? "exercise")"
+    }
+
+    private var swapOptions: [Exercise] {
+        guard let target = swapTarget else { return [] }
+        return WorkoutBuilder.swapOptions(for: target.id, limits: store.profile?.limitations ?? [])
     }
 
     private var ringFraction: Double { Double(remaining) / Double(max(1, phaseLength)) }

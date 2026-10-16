@@ -12,6 +12,15 @@ enum WorkoutBuilder {
         }
     }
 
+    /// Moves that work the same body area, are safe for the user, and differ from `exerciseId`.
+    /// Low-impact options come first.
+    static func swapOptions(for exerciseId: String, limits: Set<Limitation>) -> [Exercise] {
+        let area = ExerciseTraits.of(exerciseId).area
+        return safePool(for: limits)
+            .filter { $0.id != exerciseId && ExerciseTraits.of($0.id).area == area }
+            .sorted { ($0.impact == .low ? 0 : 1, $0.name) < ($1.impact == .low ? 0 : 1, $1.name) }
+    }
+
     static func build(profile: Profile, minutes: Int? = nil, dayIndex: Int = 0) -> Workout {
         let mins = minutes ?? profile.minutes
         let (work, rest) = profile.level.intervals

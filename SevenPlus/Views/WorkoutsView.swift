@@ -5,6 +5,13 @@ struct WorkoutsView: View {
     @EnvironmentObject var store: SessionStore
     @State private var search = ""
     @State private var playing: Workout?
+    @State private var editing: EditTarget?
+
+    /// Which custom workout the editor sheet is showing (nil workout = new).
+    struct EditTarget: Identifiable {
+        let workout: Workout?
+        var id: String { workout?.id ?? "new" }
+    }
 
     private var limits: Set<Limitation> { store.profile?.limitations ?? [] }
 
@@ -30,6 +37,30 @@ struct WorkoutsView: View {
                             }
                         }
                     }
+                    Section("My workouts") {
+                        ForEach(store.customWorkouts) { w in
+                            HStack {
+                                Button { playing = w } label: {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(w.name).font(.headline)
+                                        Text("\(w.steps.count) exercises · \(max(1, w.totalSeconds / 60)) min")
+                                            .font(.subheadline).foregroundStyle(.secondary)
+                                    }
+                                }
+                                .foregroundStyle(.primary)
+                                Spacer()
+                                Button { editing = EditTarget(workout: w) } label: { Image(systemName: "pencil") }
+                                    .buttonStyle(.borderless)
+                                    .accessibilityLabel("Edit \(w.name)")
+                            }
+                        }
+                        .onDelete { offsets in
+                            for i in offsets { store.deleteCustom(store.customWorkouts[i].id) }
+                        }
+                        Button { editing = EditTarget(workout: nil) } label: {
+                            Label("New workout", systemImage: "plus.circle")
+                        }
+                    }
                 }
                 ForEach(BodyArea.allCases) { area in
                     let list = exercises(in: area)
@@ -50,6 +81,7 @@ struct WorkoutsView: View {
                     ContentUnavailableView.search(text: search)
                 }
             }
+            .sheet(item: $editing) { CustomWorkoutEditor(existing: $0.workout) }
             .fullScreenCover(item: $playing) { w in
                 PlayerView(workout: w) { playing = nil }
             }

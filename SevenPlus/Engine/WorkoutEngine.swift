@@ -53,7 +53,9 @@ final class WorkoutEngine: ObservableObject {
     @Published private(set) var isPaused = false
     @Published private(set) var skipped: [String] = []
 
-    let timeline: Timeline
+    @Published private(set) var timeline: Timeline
+    @Published private(set) var swaps: [String: String] = [:]   // original id -> replacement id
+    var workout: Workout { timeline.workout }
     private var startDate: Date?
     private var offset: TimeInterval = 0     // accumulated elapsed before current run
     private var ticker: AnyCancellable?
@@ -61,9 +63,10 @@ final class WorkoutEngine: ObservableObject {
     var onPhaseChange: ((Phase) -> Void)?
 
     init(workout: Workout, now: @escaping () -> Date = Date.init) {
-        self.timeline = Timeline(workout: workout)
+        let t = Timeline(workout: workout)
+        self.timeline = t
         self.now = now
-        self.phase = timeline.phase(at: 0)
+        self.phase = t.phase(at: 0)
     }
 
     var elapsed: Int {
@@ -107,6 +110,28 @@ final class WorkoutEngine: ObservableObject {
         offset = TimeInterval(target)
         if startDate != nil { startDate = now() }
         tick()
+    }
+
+    /// The exercise a swap would replace: the current one while working or getting
+    /// ready, the upcoming one while resting.
+    var swapTargetIndex: Int? {
+        switch phase {
+        case .getReady: return 0
+        case .work(let i, _): return i
+        case .rest(let i, _): return i + 1
+        case .finished: return nil
+        }
+    }
+
+    /// Replace one exercise without changing any timing. Re-announces the stage.
+    func swap(to exerciseId: String) {
+        guard let i = swapTargetIndex, i < workout.steps.count else { return }
+        let original = workout.steps[i].exerciseId
+        guard original != exerciseId else { return }
+        swaps[swaps.first(where: { $0.value == original })?.key ?? original] = exerciseId
+        timeline = Timeline(workout: workout.replacing(at: i, with: exerciseId),
+                            getReadySeconds: timeline.getReadySeconds)
+        onPhaseChange?(phase)
     }
 
     func tick() {

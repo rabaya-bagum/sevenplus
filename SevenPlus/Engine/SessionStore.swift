@@ -13,6 +13,8 @@ final class SessionStore: ObservableObject {
         didSet { saveProfile() }
     }
 
+    @Published private(set) var customWorkouts: [Workout] = []
+
     let context: ModelContext
 
     init(container: ModelContainer = AppSchema.container(),
@@ -55,11 +57,39 @@ final class SessionStore: ObservableObject {
         return count
     }
 
+    // MARK: - Custom workouts
+
+    /// Insert or update a user-built workout.
+    func saveCustom(_ w: Workout) {
+        let id = w.id
+        let descriptor = FetchDescriptor<CustomWorkoutRecord>(predicate: #Predicate { $0.id == id })
+        if let record = try? context.fetch(descriptor).first {
+            record.update(from: w)
+        } else {
+            context.insert(CustomWorkoutRecord(w))
+        }
+        persist()
+        reloadCustom()
+    }
+
+    func deleteCustom(_ id: String) {
+        let descriptor = FetchDescriptor<CustomWorkoutRecord>(predicate: #Predicate { $0.id == id })
+        for record in (try? context.fetch(descriptor)) ?? [] { context.delete(record) }
+        persist()
+        reloadCustom()
+    }
+
+    private func reloadCustom() {
+        let byNewest = FetchDescriptor<CustomWorkoutRecord>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        customWorkouts = ((try? context.fetch(byNewest)) ?? []).map(\.value)
+    }
+
     // MARK: - Loading and saving
 
     private func reload() {
         let byNewest = FetchDescriptor<SessionRecord>(sortBy: [SortDescriptor(\.date, order: .reverse)])
         sessions = ((try? context.fetch(byNewest)) ?? []).map(\.value)
+        reloadCustom()
         if let record = try? context.fetch(FetchDescriptor<ProfileRecord>()).first {
             profile = try? JSONDecoder().decode(Profile.self, from: record.data)
         }

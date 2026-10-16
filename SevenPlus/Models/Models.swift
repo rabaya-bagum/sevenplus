@@ -22,6 +22,14 @@ struct Workout: Identifiable, Codable, Hashable {
     let name: String
     let steps: [WorkoutStep]
     var totalSeconds: Int { steps.reduce(0) { $0 + $1.workSeconds + $1.restSeconds } }
+
+    /// Same workout with step `index` doing a different exercise (timing unchanged).
+    func replacing(at index: Int, with exerciseId: String) -> Workout {
+        var newSteps = steps
+        let old = newSteps[index]
+        newSteps[index] = WorkoutStep(exerciseId: exerciseId, workSeconds: old.workSeconds, restSeconds: old.restSeconds)
+        return Workout(id: id, name: name, steps: newSteps)
+    }
 }
 
 enum Difficulty: String, Codable, CaseIterable {
