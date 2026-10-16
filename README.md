@@ -26,8 +26,9 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Views/OnboardingView.swift` | 4-step onboarding |
 | `Engine/WorkoutEngine.swift` | Pure `Timeline` (elapsed → phase) + wall-clock engine: pause, resume, skip |
 | `Engine/Coach.swift` | Voice cues via AVSpeechSynthesizer, ducks music |
-| `Engine/SessionStore.swift` | Local JSON history, streak calculation, quiet-mode setting |
-| `Views/HomeView.swift` | Today card, quiet toggle, streak, exercise list, history |
+| `Models/PersistentModels.swift` | SwiftData models (sessions, profile) and the container |
+| `Engine/SessionStore.swift` | Data facade over SwiftData, streaks, one-time import of Phase 0 data |
+| `Views/HomeView.swift` | Today card with length picker, classic circuit, streak, history, profile editor |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |
 | `Views/SummaryView.swift` | Time, streak, difficulty rating |
 
