@@ -4,3 +4,7 @@ DerivedData/
 build/
 *.xcuserstate
 .swiftpm/
+# Animation tooling scratch
+SevenPlus/Resources/_work_*
+tools/animation/.venv/
+tools/animation/__pycache__/
