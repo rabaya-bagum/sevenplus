@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SummaryView: View {
     let session: Session
+    let totalExercises: Int
     let onDone: () -> Void
     @EnvironmentObject var store: SessionStore
     @State private var rating: Difficulty?
@@ -16,7 +17,7 @@ struct SummaryView: View {
             HStack(spacing: 32) {
                 stat("\(session.durationSeconds / 60):\(String(format: "%02d", session.durationSeconds % 60))", "Time")
                 stat("\(store.streak)", "Day streak")
-                stat("\(12 - session.skipped.count)/12", "Exercises")
+                stat("\(totalExercises - session.skipped.count)/\(totalExercises)", "Exercises")
             }
 
             VStack(spacing: 12) {

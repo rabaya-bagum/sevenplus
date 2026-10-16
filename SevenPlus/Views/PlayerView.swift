@@ -19,7 +19,7 @@ struct PlayerView: View {
     var body: some View {
         Group {
             if let s = finishedSession {
-                SummaryView(session: s, onDone: onClose)
+                SummaryView(session: s, totalExercises: workout.steps.count, onDone: onClose)
             } else {
                 player
             }

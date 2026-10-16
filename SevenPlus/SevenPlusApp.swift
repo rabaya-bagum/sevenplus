@@ -6,8 +6,14 @@ struct SevenPlusApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .environmentObject(store)
+            Group {
+                if store.profile == nil {
+                    OnboardingView { store.profile = $0 }
+                } else {
+                    HomeView()
+                }
+            }
+            .environmentObject(store)
         }
     }
 }

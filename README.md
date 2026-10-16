@@ -1,4 +1,4 @@
-# SevenPlus — Phase 0 prototype
+# SevenPlus
 
 Classic 7-minute workout with a voice coach, background-safe timer, quiet mode, streaks and history.
 Requires **Xcode 16+**, iOS 17+.
@@ -19,7 +19,11 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | File | Purpose |
 | --- | --- |
 | `Models/Models.swift` | Exercise, Workout, Session, Difficulty |
-| `Models/ExerciseLibrary.swift` | 12 classic exercises + quiet-mode swaps |
+| `Models/ExerciseLibrary.swift` | 18 exercises + 4 quiet-mode swaps, classic circuit |
+| `Models/ExerciseTraits.swift` | Body area and joint load per exercise |
+| `Models/Profile.swift` | Goal, level (intervals), length, limitations |
+| `Engine/WorkoutBuilder.swift` | Builds the daily 5–20 min workout from the profile |
+| `Views/OnboardingView.swift` | 4-step onboarding |
 | `Engine/WorkoutEngine.swift` | Pure `Timeline` (elapsed → phase) + wall-clock engine: pause, resume, skip |
 | `Engine/Coach.swift` | Voice cues via AVSpeechSynthesizer, ducks music |
 | `Engine/SessionStore.swift` | Local JSON history, streak calculation, quiet-mode setting |

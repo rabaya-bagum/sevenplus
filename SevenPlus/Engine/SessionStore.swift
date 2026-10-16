@@ -5,8 +5,20 @@ import Foundation
 @MainActor
 final class SessionStore: ObservableObject {
     @Published private(set) var sessions: [Session] = []
-    @Published var quietMode = UserDefaults.standard.bool(forKey: "quietMode") {
-        didSet { UserDefaults.standard.set(quietMode, forKey: "quietMode") }
+    /// nil until onboarding is finished.
+    @Published var profile: Profile? = SessionStore.loadProfile() {
+        didSet {
+            if let p = profile, let data = try? JSONEncoder().encode(p) {
+                UserDefaults.standard.set(data, forKey: "profile")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "profile")
+            }
+        }
+    }
+
+    private static func loadProfile() -> Profile? {
+        guard let data = UserDefaults.standard.data(forKey: "profile") else { return nil }
+        return try? JSONDecoder().decode(Profile.self, from: data)
     }
 
     private let url: URL
