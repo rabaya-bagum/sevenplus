@@ -27,6 +27,9 @@ enum ExerciseLibrary {
         Exercise(id: "slow-climber", name: "Slow Mountain Climber", cue: "Step one knee in at a time, hips steady.", impact: .low, symbol: "figure.core.training"),
     ]
 
+    /// Exercises shown in the library (quiet-mode substitutes appear on their parent's page).
+    static var browsable: [Exercise] { all.filter { !ExerciseTraits.of($0.id).swapOnly } }
+
     static func exercise(_ id: String) -> Exercise {
         all.first { $0.id == id }!
     }

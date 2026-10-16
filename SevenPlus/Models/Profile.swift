@@ -25,7 +25,18 @@ enum Limitation: String, Codable, CaseIterable, Identifiable, Hashable {
     var id: String { rawValue }
 }
 
-enum BodyArea: String, Codable { case cardio, lower, upper, core }
+enum BodyArea: String, Codable, CaseIterable, Identifiable {
+    case cardio, lower, upper, core
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .cardio: return "Cardio"
+        case .lower: return "Lower body"
+        case .upper: return "Upper body"
+        case .core: return "Core"
+        }
+    }
+}
 
 struct Profile: Codable, Equatable {
     var goal: Goal = .getFit

@@ -28,7 +28,13 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Engine/Coach.swift` | Voice cues via AVSpeechSynthesizer, ducks music |
 | `Models/PersistentModels.swift` | SwiftData models (sessions, profile) and the container |
 | `Engine/SessionStore.swift` | Data facade over SwiftData, streaks, one-time import of Phase 0 data |
-| `Views/HomeView.swift` | Today card with length picker, classic circuit, streak, history, profile editor |
+| `Engine/Stats.swift` | Daily minutes, totals, best streak |
+| `Views/RootTabView.swift` | Today · Workouts · Progress · Profile tabs |
+| `Views/TodayView.swift` | Daily workout with length picker and streak |
+| `Views/WorkoutsView.swift` | Classic circuit + searchable exercise library by body area |
+| `Views/ExerciseDetailView.swift` | Cue, area, impact, joint load, quiet alternative |
+| `Views/ProgressTabView.swift` | Streaks, totals, 7-day chart, history |
+| `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |
 | `Views/SummaryView.swift` | Time, streak, difficulty rating |
 

@@ -10,7 +10,7 @@ struct SevenPlusApp: App {
                 if store.profile == nil {
                     OnboardingView { store.profile = $0 }
                 } else {
-                    HomeView()
+                    RootTabView()
                 }
             }
             .environmentObject(store)
