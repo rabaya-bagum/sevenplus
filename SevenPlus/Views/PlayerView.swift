@@ -5,6 +5,7 @@ struct PlayerView: View {
     let onClose: () -> Void
 
     @EnvironmentObject var store: SessionStore
+    @EnvironmentObject var premium: PremiumStore
     @StateObject private var engine: WorkoutEngine
     @State private var coach = Coach()
     @State private var finishedSession: Session?
@@ -177,6 +178,7 @@ struct PlayerView: View {
                         durationSeconds: engine.elapsed, completed: completed,
                         skipped: engine.skipped, difficulty: nil)
         store.add(s)
+        if completed { premium.workoutCompleted(totalCompleted: store.sessions.filter(\.completed).count) }
         if completed { finishedSession = s } else { onClose() }
     }
 }

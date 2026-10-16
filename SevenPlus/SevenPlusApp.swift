@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct SevenPlusApp: App {
     @StateObject private var store = SessionStore()
+    @StateObject private var premium = PremiumStore()
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +15,7 @@ struct SevenPlusApp: App {
                 }
             }
             .environmentObject(store)
+            .environmentObject(premium)
         }
     }
 }

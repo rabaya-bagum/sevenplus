@@ -8,7 +8,10 @@ Requires **Xcode 16+**, iOS 17+.
 1. Open `SevenPlus.xcodeproj`.
 2. Target **SevenPlus → Signing & Capabilities**: pick your **Team** (and change the bundle ID
    `com.sevenplus.app` if it's taken).
-3. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
+3. To test purchases locally: **Product → Scheme → Edit Scheme → Run → Options → StoreKit
+   Configuration** → choose `SevenPlus.storekit`. (In Debug builds you can also flip
+   **Profile → Developer → Unlock Premium**.)
+4. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
 
 The `SevenPlus/` and `SevenPlusTests/` folders are synced groups, so new files you add there
 join their target automatically. Background audio (keeps the voice coach going when the screen
@@ -35,6 +38,9 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Views/ExerciseDetailView.swift` | Cue, area, impact, joint load, quiet alternative |
 | `Views/ProgressTabView.swift` | Streaks, totals, 7-day chart, history |
 | `Views/CustomWorkoutEditor.swift` | Build/edit your own circuit: exercises, order, work/rest, rounds |
+| `Engine/Premium.swift` | Free-tier rules (`Gate`) and StoreKit 2 subscriptions |
+| `Views/PaywallView.swift` | Free vs Premium table, purchase, restore |
+| `Config/SevenPlus.storekit` | Local test products for the Simulator |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |
 | `Views/SummaryView.swift` | Time, streak, difficulty rating |

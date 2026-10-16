@@ -2,13 +2,20 @@ import SwiftUI
 
 struct TodayView: View {
     @EnvironmentObject var store: SessionStore
+    @EnvironmentObject var premium: PremiumStore
     @State private var playing: Workout?
     @State private var minutes: Int?
 
     private var profile: Profile { store.profile ?? Profile() }
 
+    /// The chosen length, falling back to a free one when the user isn't Premium.
+    private var effectiveMinutes: Int {
+        let m = minutes ?? profile.minutes
+        return Gate.canUse(length: m, premium: premium.isPremium) ? m : 7
+    }
+
     private var today: Workout {
-        WorkoutBuilder.build(profile: profile, minutes: minutes ?? profile.minutes,
+        WorkoutBuilder.build(profile: profile, minutes: effectiveMinutes,
                              dayIndex: WorkoutBuilder.dayIndex())
     }
 
@@ -25,9 +32,15 @@ struct TodayView: View {
                                 .accessibilityLabel("\(store.streak) day streak")
                         }
                         Text(today.name).font(.title2.bold())
-                        Picker("Length", selection: Binding(get: { minutes ?? profile.minutes },
-                                                            set: { minutes = $0 })) {
-                            ForEach(WorkoutBuilder.lengths, id: \.self) { Text("\($0)m").tag($0) }
+                        Picker("Length", selection: Binding(
+                            get: { effectiveMinutes },
+                            set: { m in
+                                if Gate.canUse(length: m, premium: premium.isPremium) { minutes = m }
+                                else { premium.showPaywall = true }
+                            })) {
+                            ForEach(WorkoutBuilder.lengths, id: \.self) { m in
+                                Text(Gate.canUse(length: m, premium: premium.isPremium) ? "\(m)m" : "\(m)m 🔒").tag(m)
+                            }
                         }
                         .pickerStyle(.segmented)
                         Text("\(today.steps.count) exercises · \(profile.level.intervals.work)s on / \(profile.level.intervals.rest)s rest")
@@ -51,7 +64,7 @@ struct TodayView: View {
             }
             .navigationTitle("SevenPlus")
             .navigationDestination(for: Exercise.self) { ExerciseDetailView(exercise: $0) }
-            .fullScreenCover(item: $playing) { w in
+            .fullScreenCover(item: $playing, onDismiss: { premium.presentPendingUpsell() }) { w in
                 PlayerView(workout: w) { playing = nil }
             }
         }

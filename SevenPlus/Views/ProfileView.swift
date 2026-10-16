@@ -3,6 +3,7 @@ import SwiftUI
 /// Edit goal, level, default length and limitations after onboarding.
 struct ProfileView: View {
     @EnvironmentObject var store: SessionStore
+    @EnvironmentObject var premium: PremiumStore
 
     private var p: Binding<Profile> {
         Binding(get: { store.profile ?? Profile() }, set: { store.profile = $0 })
@@ -33,6 +34,19 @@ struct ProfileView: View {
                 } footer: {
                     Text("Daily workouts leave out moves that load these areas.")
                 }
+                Section("Premium") {
+                    if premium.isPremium {
+                        Label("Premium active", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
+                    } else {
+                        Button("See Premium") { premium.showPaywall = true }
+                    }
+                    Button("Restore purchases") { Task { await premium.restore() } }
+                }
+                #if DEBUG
+                Section("Developer") {
+                    Toggle("Unlock Premium (debug only)", isOn: $premium.debugUnlock)
+                }
+                #endif
             }
             .navigationTitle("Profile")
         }

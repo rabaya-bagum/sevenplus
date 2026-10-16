@@ -3,6 +3,7 @@ import SwiftUI
 /// Ready-made circuits plus the full exercise library, searchable and grouped by body area.
 struct WorkoutsView: View {
     @EnvironmentObject var store: SessionStore
+    @EnvironmentObject var premium: PremiumStore
     @State private var search = ""
     @State private var playing: Workout?
     @State private var editing: EditTarget?
@@ -57,7 +58,13 @@ struct WorkoutsView: View {
                         .onDelete { offsets in
                             for i in offsets { store.deleteCustom(store.customWorkouts[i].id) }
                         }
-                        Button { editing = EditTarget(workout: nil) } label: {
+                        Button {
+                            if Gate.canCreateCustom(existing: store.customWorkouts.count, premium: premium.isPremium) {
+                                editing = EditTarget(workout: nil)
+                            } else {
+                                premium.showPaywall = true
+                            }
+                        } label: {
                             Label("New workout", systemImage: "plus.circle")
                         }
                     }
@@ -82,7 +89,7 @@ struct WorkoutsView: View {
                 }
             }
             .sheet(item: $editing) { CustomWorkoutEditor(existing: $0.workout) }
-            .fullScreenCover(item: $playing) { w in
+            .fullScreenCover(item: $playing, onDismiss: { premium.presentPendingUpsell() }) { w in
                 PlayerView(workout: w) { playing = nil }
             }
         }
