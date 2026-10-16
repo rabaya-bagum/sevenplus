@@ -83,3 +83,9 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 3. Custom workouts and 5/10/15/20-minute lengths
 4. Adaptive rules using the difficulty rating
 5. HealthKit write + Apple Watch app
+
+## Releasing
+
+- `docs/TESTFLIGHT.md`: developer account, subscriptions, privacy label, upload, testers
+- `docs/BETA_TESTERS.md`: invite message, what to test, end-of-week survey
+- `docs/privacy-policy.md`: privacy policy to host (fill in the brackets), then set `PrivacyPolicyURL`

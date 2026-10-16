@@ -71,6 +71,11 @@ struct YourDataView: View {
                 Text("This can't be undone. Your Premium subscription isn't affected; manage it in Settings → your name → Subscriptions. Anything left in Apple Health can be removed in the Health app → Sources → SevenPlus.")
             }
         }
+        .toolbar {
+            if let privacy = LegalLinks.privacyPolicy {
+                Link("Privacy Policy", destination: privacy)
+            }
+        }
         .navigationTitle("Your data")
         .task(id: exportKey) { makeExport() }
         .confirmationDialog("Erase all SevenPlus data?", isPresented: $confirmErase, titleVisibility: .visible) {

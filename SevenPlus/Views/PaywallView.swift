@@ -75,6 +75,13 @@ struct PaywallView: View {
                         .font(.footnote)
                     Text("Subscriptions renew automatically until cancelled in Settings. Cancel at least 24 hours before renewal to avoid being charged.")
                         .font(.caption2).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    HStack(spacing: 16) {
+                        if let privacy = LegalLinks.privacyPolicy {
+                            Link("Privacy Policy", destination: privacy)
+                        }
+                        Link("Terms of Use", destination: LegalLinks.terms)
+                    }
+                    .font(.caption)
                 }
                 .padding(24)
             }
@@ -98,4 +105,15 @@ struct PaywallView: View {
         }
         return line
     }
+}
+
+/// Links Apple requires next to subscription purchases.
+enum LegalLinks {
+    /// Set `PrivacyPolicyURL` in Config/SevenPlus-Info.plist once the policy is hosted.
+    static var privacyPolicy: URL? {
+        (Bundle.main.object(forInfoDictionaryKey: "PrivacyPolicyURL") as? String)
+            .flatMap { $0.hasPrefix("https://") ? URL(string: $0) : nil }
+    }
+    /// Apple's standard licence agreement (used unless you write your own terms).
+    static let terms = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 }
