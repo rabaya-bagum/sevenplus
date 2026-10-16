@@ -44,4 +44,5 @@ struct Session: Identifiable, Codable {
     let completed: Bool
     let skipped: [String]
     var difficulty: Difficulty?
+    var calories: Int? = nil
 }

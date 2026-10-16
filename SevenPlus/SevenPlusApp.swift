@@ -5,6 +5,7 @@ struct SevenPlusApp: App {
     @StateObject private var store = SessionStore()
     @StateObject private var premium = PremiumStore()
     @StateObject private var reminders = ReminderScheduler()
+    @StateObject private var health = HealthManager()
 
     var body: some Scene {
         WindowGroup {
@@ -18,6 +19,7 @@ struct SevenPlusApp: App {
             .environmentObject(store)
             .environmentObject(premium)
             .environmentObject(reminders)
+            .environmentObject(health)
         }
     }
 }

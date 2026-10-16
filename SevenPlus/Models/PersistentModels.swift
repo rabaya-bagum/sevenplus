@@ -12,6 +12,7 @@ final class SessionRecord {
     var completed: Bool
     var skipped: [String]
     var difficultyRaw: String?
+    var calories: Int?
 
     init(_ s: Session) {
         id = s.id
@@ -21,12 +22,13 @@ final class SessionRecord {
         completed = s.completed
         skipped = s.skipped
         difficultyRaw = s.difficulty?.rawValue
+        calories = s.calories
     }
 
     var value: Session {
         Session(id: id, workoutId: workoutId, date: date, durationSeconds: durationSeconds,
                 completed: completed, skipped: skipped,
-                difficulty: difficultyRaw.flatMap(Difficulty.init(rawValue:)))
+                difficulty: difficultyRaw.flatMap(Difficulty.init(rawValue:)), calories: calories)
     }
 }
 

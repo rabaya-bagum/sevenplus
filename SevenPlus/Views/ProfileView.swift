@@ -5,6 +5,7 @@ struct ProfileView: View {
     @EnvironmentObject var store: SessionStore
     @EnvironmentObject var premium: PremiumStore
     @EnvironmentObject var reminders: ReminderScheduler
+    @EnvironmentObject var health: HealthManager
 
     private var reminderTime: Binding<Date> {
         Binding(
@@ -76,6 +77,15 @@ struct ProfileView: View {
                 } footer: {
                     if reminders.permissionDenied {
                         Text("Notifications are off for SevenPlus. Turn them on in Settings → Notifications.")
+                    }
+                }
+                if health.isAvailable {
+                    Section {
+                        Toggle("Save workouts to Apple Health", isOn: Binding(
+                            get: { health.enabled },
+                            set: { on in Task { await health.setEnabled(on) } }))
+                    } footer: {
+                        Text(health.lastError ?? "Calories are estimated from your weight in Health, or 70 kg if it isn't shared.")
                     }
                 }
                 Section("Premium") {

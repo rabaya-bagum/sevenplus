@@ -18,6 +18,9 @@ struct SummaryView: View {
                 stat("\(session.durationSeconds / 60):\(String(format: "%02d", session.durationSeconds % 60))", "Time")
                 stat("\(store.streak)", "Day streak")
                 stat("\(totalExercises - session.skipped.count)/\(totalExercises)", "Exercises")
+                if let kcal = session.calories {
+                    stat("\(kcal)", "kcal (est.)")
+                }
             }
 
             VStack(spacing: 12) {

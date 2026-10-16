@@ -6,6 +6,7 @@ struct PlayerView: View {
 
     @EnvironmentObject var store: SessionStore
     @EnvironmentObject var premium: PremiumStore
+    @EnvironmentObject var health: HealthManager
     @StateObject private var engine: WorkoutEngine
     @State private var coach = Coach()
     @State private var finishedSession: Session?
@@ -33,6 +34,7 @@ struct PlayerView: View {
                 if p == .finished { finish(completed: true) }
             }
             engine.start()
+            Task { await health.refreshWeight() }
         }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
         .onChange(of: scenePhase) { _, new in
@@ -174,10 +176,17 @@ struct PlayerView: View {
     private func finish(completed: Bool) {
         guard finishedSession == nil else { return }
         engine.pause()
-        let s = Session(id: UUID(), workoutId: workout.id, date: Date(),
-                        durationSeconds: engine.elapsed, completed: completed,
-                        skipped: engine.skipped, difficulty: nil)
+        let end = Date()
+        let elapsed = engine.elapsed
+        let active = Calories.activeSeconds(workout: engine.workout, elapsed: elapsed,
+                                            getReady: engine.timeline.getReadySeconds)
+        let weight = health.enabled ? health.cachedWeightKg : nil
+        let kcal = Calories.estimate(activeSeconds: active, weightKg: weight)
+        let s = Session(id: UUID(), workoutId: workout.id, date: end,
+                        durationSeconds: elapsed, completed: completed,
+                        skipped: engine.skipped, difficulty: nil, calories: kcal)
         store.add(s)
+        Task { await health.save(start: end.addingTimeInterval(-Double(elapsed)), end: end, kcal: kcal) }
         if completed { premium.workoutCompleted(totalCompleted: store.sessions.filter(\.completed).count) }
         if completed { finishedSession = s } else { onClose() }
     }

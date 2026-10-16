@@ -11,7 +11,9 @@ Requires **Xcode 16+**, iOS 17+.
 3. To test purchases locally: **Product → Scheme → Edit Scheme → Run → Options → StoreKit
    Configuration** → choose `SevenPlus.storekit`. (In Debug builds you can also flip
    **Profile → Developer → Unlock Premium**.)
-4. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
+4. HealthKit: the app target uses `Config/SevenPlus.entitlements`. If signing complains, add the
+   **HealthKit** capability under Signing & Capabilities (it uses the same file).
+5. Run tests: **⌘U**. Run the app: **⌘R** on a simulator or your iPhone.
 
 The `SevenPlus/` and `SevenPlusTests/` folders are synced groups, so new files you add there
 join their target automatically. Background audio (keeps the voice coach going when the screen
@@ -42,6 +44,7 @@ locks) is set in `Config/SevenPlus-Info.plist`.
 | `Views/PaywallView.swift` | Free vs Premium table, purchase, restore |
 | `Config/SevenPlus.storekit` | Local test products for the Simulator |
 | `Engine/Adaptive.swift` | Adaptive difficulty from ratings, daily readiness check-in |
+| `Engine/Health.swift` | Calorie estimate and saving workouts to Apple Health |
 | `Engine/Reminders.swift` | Weekly reminder notifications at a chosen time |
 | `Views/ProfileView.swift` | Goal, level, default length, limitations |
 | `Views/PlayerView.swift` | Timer ring, cues, next-up, pause/skip/end |
