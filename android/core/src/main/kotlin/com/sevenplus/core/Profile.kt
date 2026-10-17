@@ -3,7 +3,11 @@ package com.sevenplus.core
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Goal(val label: String) { GET_FIT("Get fit"), LOSE_WEIGHT("Lose weight"), GET_STRONG("Get stronger") }
+enum class Goal(val label: String, val title: String) {
+    GET_FIT("Get fit", "Get Fit"),
+    LOSE_WEIGHT("Lose weight", "Lose Weight"),
+    GET_STRONG("Get stronger", "Get Stronger"),
+}
 
 @Serializable
 enum class Level(val label: String, val work: Int, val rest: Int) {
