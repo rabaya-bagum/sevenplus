@@ -19,7 +19,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
@@ -101,7 +100,6 @@ class AndroidYourDataServiceTest {
         assertTrue("health.delete" in calls)
     }
 
-    @Ignore("needs core ExportFile.encode; enable after merge")
     @Test fun writeExportContainsSessionIds() = runTest {
         sessions.inner.add(Session("session-abc", "w", 1, 420, true))
         sessions.inner.add(Session("session-xyz", "w", 2, 420, true))
