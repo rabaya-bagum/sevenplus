@@ -29,7 +29,23 @@ final class Coach {
     private func say(_ text: String) {
         synth.stopSpeaking(at: .immediate)
         let u = AVSpeechUtterance(string: text)
+        u.voice = Self.voice
         u.rate = AVSpeechUtteranceDefaultSpeechRate
         synth.speak(u)
     }
+
+    /// Best installed English voice: Premium, then Enhanced, then the default.
+    /// Premium/Enhanced voices are downloaded by the user in Settings → Accessibility →
+    /// Spoken Content → Voices; without them this falls back to the standard voice.
+    static let voice: AVSpeechSynthesisVoice? = {
+        let lang = AVSpeechSynthesisVoice.currentLanguageCode()
+        let english = AVSpeechSynthesisVoice.speechVoices().filter {
+            $0.language.hasPrefix("en") && !$0.voiceTraits.contains(.isNoveltyVoice)
+        }
+        func rank(_ v: AVSpeechSynthesisVoice) -> (Int, Int) {
+            let quality = [.premium: 2, .enhanced: 1][v.quality] ?? 0
+            return (quality, v.language == lang ? 1 : 0)
+        }
+        return english.max { rank($0) < rank($1) } ?? AVSpeechSynthesisVoice(language: lang)
+    }()
 }
