@@ -1,6 +1,7 @@
 package com.sevenplus.core
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 /** Everything SevenPlus keeps about the user, as one readable JSON file. Port of iOS `ExportFile`. */
 @Serializable
@@ -17,10 +18,12 @@ data class ExportFile(
     val displayName: String,
 ) {
     /** Pretty-printed JSON. */
-    fun encode(): String = TODO("core")
+    fun encode(): String = JSON.encodeToString(serializer(), this)
 
     companion object {
         const val CURRENT_VERSION = 1
-        fun decode(json: String): ExportFile = TODO("core")
+        fun decode(json: String): ExportFile = JSON.decodeFromString(serializer(), json)
+
+        private val JSON = Json { prettyPrint = true; encodeDefaults = true; ignoreUnknownKeys = true }
     }
 }
